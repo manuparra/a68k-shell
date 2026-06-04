@@ -98,11 +98,11 @@ Recommended push pattern:
 
 ```sh
 export GITHUB_TOKEN=...
-git push -u origin feature/my-feature
+./scripts/push-branch.sh feature/my-feature
 ```
 
-If Git asks for credentials, use your GitHub username and the token as the
-password, or use a temporary `GIT_ASKPASS` helper that reads `GITHUB_TOKEN`.
+The helper creates a temporary `GIT_ASKPASS` script, reads the token from the
+environment, pushes the branch, and deletes the helper.
 
 ## Adding commands
 
