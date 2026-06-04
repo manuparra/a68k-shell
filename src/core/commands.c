@@ -2,12 +2,15 @@
 #include <string.h>
 
 #include "command.h"
+#include "commands/cat.h"
 #include "commands/cd.h"
 #include "commands/date.h"
 #include "commands/echo.h"
 #include "commands/history.h"
 #include "commands/ls.h"
+#include "commands/mkdir.h"
 #include "commands/pwd.h"
+#include "commands/rm.h"
 
 static const struct Command commands[] = {
     {"echo", command_echo},
@@ -15,7 +18,10 @@ static const struct Command commands[] = {
     {"cd", command_cd},
     {"ls", command_ls},
     {"history", command_history},
-    {"pwd", command_pwd}
+    {"pwd", command_pwd},
+    {"mkdir", command_mkdir},
+    {"rm", command_rm},
+    {"cat", command_cat}
 };
 
 const struct Command *commands_get_all(void)

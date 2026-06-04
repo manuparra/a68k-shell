@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `history`
+- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -74,6 +74,9 @@ hello amiga
 RAM:
 #RAM:>ls
 #RAM:>ls -l
+#RAM:>mkdir demo
+#RAM:>rm demo
+#RAM:>cat S:Startup-Sequence
 #RAM:>history
  1 echo hello amiga
  2 date
@@ -81,6 +84,9 @@ RAM:
  4 pwd
  5 ls
  6 ls -l
+ 7 mkdir demo
+ 8 rm demo
+ 9 cat S:Startup-Sequence
 #RAM:>!5
 ls
 #RAM:>unknown
@@ -99,6 +105,7 @@ The exact `date` value comes from the emulator/runtime clock.
   in the current vbcc target.
 - `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
   ownership/group permissions.
+- `rm` is not recursive. It removes files and empty directories only.
 - No pipes, redirection, globbing, variables, quotes, or autocomplete yet.
 
 ## Commands
@@ -157,6 +164,35 @@ Lists files from the current directory or a supplied path:
 
 `ls -l` prints a Unix-inspired view with type, permission-style flags, size, and
 name.
+
+### mkdir
+
+Creates a directory in the current directory or at the supplied Amiga path:
+
+```text
+#>mkdir tmp
+#>mkdir RAM:tmp
+```
+
+### rm
+
+Removes a file or an empty directory:
+
+```text
+#>rm oldfile
+#>rm RAM:tmp
+```
+
+`rm` does not remove non-empty directories.
+
+### cat
+
+Prints a file to the shell:
+
+```text
+#>cat S:Startup-Sequence
+#>cat RAM:notes.txt
+```
 
 ### history
 

@@ -18,11 +18,14 @@ docker run --rm --platform linux/amd64 \
     src/core/prompt.c \
     src/core/session.c \
     src/core/commands.c \
+    src/commands/cat/cat.c \
     src/commands/cd/cd.c \
     src/commands/echo/echo.c \
     src/commands/history/history.c \
     src/commands/ls/ls.c \
+    src/commands/mkdir/mkdir.c \
     src/commands/pwd/pwd.c \
+    src/commands/rm/rm.c \
     src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
