@@ -17,6 +17,9 @@ To add a command:
 5. Add the new source file to `scripts/build.sh`.
 6. Build with `make build`.
 
-The parser is intentionally small in the MVP. It splits on spaces and tabs, with
-no quotes, globbing, pipes, redirection, variables, history, or autocomplete.
+Commands that call AmigaDOS should include the DOS structs from the NDK headers
+and the vbcc inline prototypes from the Kickstart 1.3 target, as done by `cd`
+and `ls`.
 
+The parser is intentionally small. It splits on spaces and tabs, with no quotes,
+globbing, pipes, redirection, variables, history, or autocomplete.

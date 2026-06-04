@@ -5,7 +5,8 @@ A substitute for the Amiga Workbench 1.3 Shell/CLI inspired by Linux shells.
 The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>`
-- Commands: `echo`, `date`
+- Startup banner with author/contact details
+- Commands: `echo`, `date`, `cd`, `ls`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -68,6 +69,9 @@ Expected smoke test:
 hello amiga
 #>date
 2026-06-04 19:00:00
+#>cd RAM:
+#>ls
+#>ls -l
 #>unknown
 unknown: command not found
 #>exit
@@ -80,8 +84,52 @@ The exact `date` value comes from the emulator/runtime clock.
 - The MVP prompt is `#>`.
 - The planned directory-aware prompt form is `#RAM:tmp/folder>`, but full
   current-directory path resolution needs a Kickstart 1.3-safe implementation.
-- No `cd`, `pwd`, pipes, redirection, globbing, variables, history, quotes, or
+- `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
+  ownership/group permissions.
+- No `pwd`, pipes, redirection, globbing, variables, history, quotes, or
   autocomplete yet.
+
+## Commands
+
+### echo
+
+```text
+#>echo hello amiga
+hello amiga
+```
+
+### date
+
+```text
+#>date
+2026-06-04 19:00:00
+```
+
+The value comes from the emulator/runtime clock.
+
+### cd
+
+Changes the process current directory using AmigaDOS locks:
+
+```text
+#>cd RAM:
+#>cd ..
+#>cd DF0:folder
+```
+
+### ls
+
+Lists files from the current directory or a supplied path:
+
+```text
+#>ls
+#>ls RAM:
+#>ls -l
+#>ls -l DF0:folder
+```
+
+`ls -l` prints a Unix-inspired view with type, permission-style flags, size, and
+name.
 
 ## Development flow
 
