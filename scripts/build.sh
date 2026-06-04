@@ -19,6 +19,7 @@ docker run --rm --platform linux/amd64 \
     src/core/commands.c \
     src/commands/cd/cd.c \
     src/commands/echo/echo.c \
+    src/commands/ls/ls.c \
     src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
