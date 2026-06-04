@@ -20,6 +20,7 @@ docker run --rm --platform linux/amd64 \
     src/core/commands.c \
     src/commands/cat/cat.c \
     src/commands/cd/cd.c \
+    src/commands/df/df.c \
     src/commands/echo/echo.c \
     src/commands/history/history.c \
     src/commands/ls/ls.c \
@@ -27,7 +28,6 @@ docker run --rm --platform linux/amd64 \
     src/commands/ps/ps.c \
     src/commands/pwd/pwd.c \
     src/commands/rm/rm.c \
-    src/commands/vi/vi.c \
     src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
