@@ -35,6 +35,7 @@ void shell_run(void)
     for (;;) {
         if (line_editor_read(line, sizeof(line)) == 0) {
             putchar('\n');
+            line_editor_end();
             session_cleanup();
             return;
         }
@@ -47,6 +48,7 @@ void shell_run(void)
         }
 
         if (strcmp(argv[0], "exit") == 0) {
+            line_editor_end();
             session_cleanup();
             return;
         }

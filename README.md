@@ -95,7 +95,9 @@ The exact `date` value comes from the emulator/runtime clock.
 ## Commands
 
 Use cursor up/down to select previous commands. Press return on a selected
-command to execute it.
+command to execute it. The shell switches the Amiga console to raw input mode
+while reading commands so cursor keys can be handled without the console echoing
+the input line first.
 
 ### echo
 

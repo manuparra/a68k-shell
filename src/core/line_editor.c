@@ -1,16 +1,41 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <dos/dos.h>
+#include <inline/dos_protos.h>
+
 #include "history.h"
 #include "line_editor.h"
 #include "prompt.h"
 #include "shell.h"
+
+extern struct DosLibrary *DOSBase;
 
 #define KEY_EOF -1
 #define KEY_ENTER -2
 #define KEY_BACKSPACE -3
 #define KEY_UP -4
 #define KEY_DOWN -5
+
+static int raw_mode_enabled = 0;
+
+static void set_raw_mode(void)
+{
+    if (!raw_mode_enabled) {
+        fputs("\233" "20h", stdout);
+        fflush(stdout);
+        raw_mode_enabled = 1;
+    }
+}
+
+void line_editor_end(void)
+{
+    if (raw_mode_enabled) {
+        fputs("\233" "20l", stdout);
+        fflush(stdout);
+        raw_mode_enabled = 0;
+    }
+}
 
 static void redraw_line(const char *prompt, const char *line, int old_len)
 {
@@ -35,14 +60,18 @@ static void redraw_line(const char *prompt, const char *line, int old_len)
 
 static int read_key(void)
 {
-    int c;
-    int c2;
-    int c3;
+    BPTR input;
+    char ch;
+    unsigned char c;
+    unsigned char c2;
+    unsigned char c3;
 
-    c = getchar();
-    if (c == EOF) {
+    input = Input();
+    if (Read(input, &ch, 1) != 1) {
         return KEY_EOF;
     }
+
+    c = (unsigned char)ch;
 
     if (c == '\n' || c == '\r') {
         return KEY_ENTER;
@@ -53,13 +82,16 @@ static int read_key(void)
     }
 
     if (c == 27) {
-        c2 = getchar();
-        if (c2 == EOF) {
+        if (Read(input, &ch, 1) != 1) {
             return KEY_EOF;
         }
+        c2 = (unsigned char)ch;
 
         if (c2 == '[') {
-            c3 = getchar();
+            if (Read(input, &ch, 1) != 1) {
+                return KEY_EOF;
+            }
+            c3 = (unsigned char)ch;
             if (c3 == 'A') {
                 return KEY_UP;
             }
@@ -72,7 +104,10 @@ static int read_key(void)
     }
 
     if (c == 155) {
-        c2 = getchar();
+        if (Read(input, &ch, 1) != 1) {
+            return KEY_EOF;
+        }
+        c2 = (unsigned char)ch;
         if (c2 == 'A') {
             return KEY_UP;
         }
@@ -95,6 +130,7 @@ int line_editor_read(char *line, int line_size)
     int history_index;
     int key;
 
+    set_raw_mode();
     prompt_build(prompt, sizeof(prompt));
     fputs(prompt, stdout);
     fflush(stdout);
@@ -183,4 +219,3 @@ int line_editor_read(char *line, int line_size)
         }
     }
 }
-
