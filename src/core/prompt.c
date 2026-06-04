@@ -1,25 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
-static void normalize_path(char *path)
-{
-    if (strncmp(path, "RAM Disk:", 9) == 0) {
-        memmove(path + 4, path + 9, strlen(path + 9) + 1);
-        memcpy(path, "RAM:", 4);
-    }
-}
+#include "session.h"
 
 void prompt_print(void)
 {
-    char path[160];
+    const char *leaf;
 
-    path[0] = '\0';
-    normalize_path(path);
+    leaf = session_current_leaf();
 
-    if (path[0] == '\0') {
+    if (leaf[0] == '\0') {
         printf("#>");
     } else {
-        printf("#%s>", path);
+        printf("#%s>", leaf);
     }
 
     fflush(stdout);

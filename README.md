@@ -4,9 +4,9 @@ A substitute for the Amiga Workbench 1.3 Shell/CLI inspired by Linux shells.
 
 The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
-- Prompt: `#>`
+- Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `cd`, `ls`, `history`
+- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -70,32 +70,36 @@ hello amiga
 #>date
 2026-06-04 19:00:00
 #>cd RAM:
-#>ls
-#>ls -l
-#>history
+#RAM:>pwd
+RAM:
+#RAM:>ls
+#RAM:>ls -l
+#RAM:>history
  1 echo hello amiga
  2 date
  3 cd RAM:
- 4 ls
- 5 ls -l
-#>!4
+ 4 pwd
+ 5 ls
+ 6 ls -l
+#RAM:>!5
 ls
-#>unknown
+#RAM:>unknown
 unknown: command not found
-#>exit
+#RAM:>exit
 ```
 
 The exact `date` value comes from the emulator/runtime clock.
 
 ## Current limitations
 
-- The MVP prompt is `#>`.
-- The planned directory-aware prompt form is `#RAM:tmp/folder>`, but full
-  current-directory path resolution needs a Kickstart 1.3-safe implementation.
+- The prompt tracks directories changed through this shell and displays only
+  the final component, for example `#folder>`.
+- `pwd` prints the shell's tracked path. It starts as `.` until the first `cd`
+  because Kickstart 1.3 does not provide a simple safe `NameFromLock` path API
+  in the current vbcc target.
 - `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
   ownership/group permissions.
-- No `pwd`, pipes, redirection, globbing, variables, quotes, or
-  autocomplete yet.
+- No pipes, redirection, globbing, variables, quotes, or autocomplete yet.
 
 ## Commands
 
@@ -123,6 +127,21 @@ Changes the process current directory using AmigaDOS locks:
 #>cd RAM:
 #>cd ..
 #>cd DF0:folder
+```
+
+The prompt shows the final component of the tracked path after a successful
+`cd`.
+
+### pwd
+
+Shows the shell's tracked current directory:
+
+```text
+#>pwd
+.
+#>cd RAM:tmp/folder
+#folder>pwd
+RAM:tmp/folder
 ```
 
 ### ls

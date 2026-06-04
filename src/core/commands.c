@@ -7,13 +7,15 @@
 #include "commands/echo.h"
 #include "commands/history.h"
 #include "commands/ls.h"
+#include "commands/pwd.h"
 
 static const struct Command commands[] = {
     {"echo", command_echo},
     {"date", command_date},
     {"cd", command_cd},
     {"ls", command_ls},
-    {"history", command_history}
+    {"history", command_history},
+    {"pwd", command_pwd}
 };
 
 const struct Command *commands_get_all(void)
