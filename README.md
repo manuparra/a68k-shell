@@ -8,6 +8,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 - Startup banner with author/contact details
 - Commands: `echo`, `date`, `cd`, `ls`
 - Built-in exit command: `exit`
+- Command history navigation with cursor up/down
 - Modular command layout under `src/commands/`
 
 The long-term goal is to grow this into a practical shell-like environment for
@@ -72,6 +73,8 @@ hello amiga
 #>cd RAM:
 #>ls
 #>ls -l
+#><cursor up>
+#>ls -l
 #>unknown
 unknown: command not found
 #>exit
@@ -90,6 +93,9 @@ The exact `date` value comes from the emulator/runtime clock.
   autocomplete yet.
 
 ## Commands
+
+Use cursor up/down to select previous commands. Press return on a selected
+command to execute it.
 
 ### echo
 

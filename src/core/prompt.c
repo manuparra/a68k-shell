@@ -9,7 +9,7 @@ static void normalize_path(char *path)
     }
 }
 
-void prompt_print(void)
+void prompt_build(char *buffer, int buffer_size)
 {
     char path[160];
 
@@ -17,10 +17,21 @@ void prompt_print(void)
     normalize_path(path);
 
     if (path[0] == '\0') {
-        printf("#>");
+        strncpy(buffer, "#>", buffer_size - 1);
     } else {
-        printf("#%s>", path);
+        strncpy(buffer, "#", buffer_size - 1);
+        strncat(buffer, path, buffer_size - strlen(buffer) - 1);
+        strncat(buffer, ">", buffer_size - strlen(buffer) - 1);
     }
 
+    buffer[buffer_size - 1] = '\0';
+}
+
+void prompt_print(void)
+{
+    char prompt[180];
+
+    prompt_build(prompt, sizeof(prompt));
+    fputs(prompt, stdout);
     fflush(stdout);
 }

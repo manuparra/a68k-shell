@@ -12,6 +12,8 @@ docker run --rm --platform linux/amd64 \
   "$IMAGE" \
   vc +kick13 -Iinclude -Isrc/core -I/opt/NDK_3.9/Include/include_h -o "$OUT" \
     src/core/banner.c \
+    src/core/history.c \
+    src/core/line_editor.c \
     src/core/main.c \
     src/core/shell.c \
     src/core/prompt.c \

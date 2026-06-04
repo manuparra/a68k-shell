@@ -3,8 +3,9 @@
 
 #include "banner.h"
 #include "command.h"
+#include "history.h"
+#include "line_editor.h"
 #include "shell.h"
-#include "prompt.h"
 #include "session.h"
 
 static int parse_line(char *line, char **argv, int max_args)
@@ -32,13 +33,13 @@ void shell_run(void)
     banner_print();
 
     for (;;) {
-        prompt_print();
-
-        if (fgets(line, sizeof(line), stdin) == 0) {
+        if (line_editor_read(line, sizeof(line)) == 0) {
             putchar('\n');
             session_cleanup();
             return;
         }
+
+        history_add(line);
 
         argc = parse_line(line, argv, SHELL_MAX_ARGS);
         if (argc == 0) {
