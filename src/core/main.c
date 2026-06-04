@@ -1,8 +1,7 @@
-#include <stdio.h>
+#include "shell.h"
 
 int main(void)
 {
-    puts("a68k-shell scaffold");
+    shell_run();
     return 0;
 }
-

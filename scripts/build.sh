@@ -10,7 +10,12 @@ docker run --rm --platform linux/amd64 \
   -v "$PWD:/work" \
   -w /work \
   "$IMAGE" \
-  vc +kick13 -Iinclude -o "$OUT" src/core/main.c
+  vc +kick13 -Iinclude -Isrc/core -o "$OUT" \
+    src/core/main.c \
+    src/core/shell.c \
+    src/core/prompt.c \
+    src/core/commands.c \
+    src/commands/echo/echo.c \
+    src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
-
