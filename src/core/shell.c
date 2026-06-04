@@ -5,6 +5,7 @@
 #include "command.h"
 #include "shell.h"
 #include "prompt.h"
+#include "session.h"
 
 static int parse_line(char *line, char **argv, int max_args)
 {
@@ -35,6 +36,7 @@ void shell_run(void)
 
         if (fgets(line, sizeof(line), stdin) == 0) {
             putchar('\n');
+            session_cleanup();
             return;
         }
 
@@ -44,6 +46,7 @@ void shell_run(void)
         }
 
         if (strcmp(argv[0], "exit") == 0) {
+            session_cleanup();
             return;
         }
 
