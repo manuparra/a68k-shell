@@ -209,6 +209,22 @@ ADDRESS   PRI STATE   TYPE    NAME
 
 This is Amiga-level task information, not Unix process metadata.
 
+Use `ps -a` for Amiga-specific details:
+
+```text
+#>ps -a
+ADDRESS   PRI STATE   TYPE    NAME
+0012f3a0    0 RUN     process Initial CLI
+          stack=4096 used=1200 free=2896 sp=0012ee00 flags=00
+          sigalloc=000001ff sigwait=00000000 sigrecvd=00000000 mem=3/8192
+          cli=1 seg=00042abc curdir=00020f10 cis=00021000 cos=00021100
+          console=0001f330 filesystem=0001e2a0
+```
+
+The extended fields are raw Amiga structures: stack bounds/signals from
+`struct Task`, memory entries from `tc_MemEntry`, and DOS process fields from
+`struct Process` when the task is an AmigaDOS process.
+
 ### history
 
 Shows the last 16 commands with a number:
