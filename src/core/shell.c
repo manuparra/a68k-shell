@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "banner.h"
 #include "command.h"
 #include "shell.h"
 #include "prompt.h"
@@ -27,7 +28,7 @@ void shell_run(void)
     char *argv[SHELL_MAX_ARGS];
     int argc;
 
-    puts("a68k-shell 0.1");
+    banner_print();
 
     for (;;) {
         prompt_print();
@@ -49,4 +50,3 @@ void shell_run(void)
         commands_dispatch(argc, argv);
     }
 }
-

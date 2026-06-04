@@ -11,6 +11,7 @@ docker run --rm --platform linux/amd64 \
   -w /work \
   "$IMAGE" \
   vc +kick13 -Iinclude -Isrc/core -o "$OUT" \
+    src/core/banner.c \
     src/core/main.c \
     src/core/shell.c \
     src/core/prompt.c \
