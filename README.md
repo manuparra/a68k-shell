@@ -50,7 +50,8 @@ The package is written to `dist/A68KShell` and contains:
 
 From Workbench, open the mounted `A68KShell` drawer and double-click the
 `A68KShell` icon. The launcher opens a `CON:` window and runs `a68ksh` inside
-it.
+it. The console uses `WAIT/CLOSE`, so it stays open while the shell is running
+and waits for confirmation before closing after `exit`.
 
 ## Run in fs-UAE
 

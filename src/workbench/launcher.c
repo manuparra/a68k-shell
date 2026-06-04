@@ -5,7 +5,15 @@ extern struct DosLibrary *DOSBase;
 
 int main(void)
 {
-    Execute((STRPTR)"run >CON:0/12/640/180/A68K Shell/CLOSE a68ksh", 0, 0);
+    BPTR console;
+
+    console = Open((STRPTR)"CON:0/12/640/180/A68K Shell/WAIT/CLOSE", MODE_NEWFILE);
+    if (console == 0) {
+        return 20;
+    }
+
+    Execute((STRPTR)"a68ksh", console, console);
+    Close(console);
+
     return 0;
 }
-
