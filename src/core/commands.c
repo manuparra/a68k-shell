@@ -12,6 +12,7 @@
 #include "commands/ps.h"
 #include "commands/pwd.h"
 #include "commands/rm.h"
+#include "commands/vi.h"
 
 static const struct Command commands[] = {
     {"echo", command_echo},
@@ -23,7 +24,8 @@ static const struct Command commands[] = {
     {"mkdir", command_mkdir},
     {"rm", command_rm},
     {"cat", command_cat},
-    {"ps", command_ps}
+    {"ps", command_ps},
+    {"vi", command_vi}
 };
 
 const struct Command *commands_get_all(void)

@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `ps`, `history`
+- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `ps`, `vi`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -78,6 +78,7 @@ RAM:
 #RAM:>rm demo
 #RAM:>cat S:Startup-Sequence
 #RAM:>ps
+#RAM:>vi notes.txt
 #RAM:>history
  1 echo hello amiga
  2 date
@@ -89,6 +90,7 @@ RAM:
  8 rm demo
  9 cat S:Startup-Sequence
 10 ps
+11 vi notes.txt
 #RAM:>!5
 ls
 #RAM:>unknown
@@ -108,6 +110,7 @@ The exact `date` value comes from the emulator/runtime clock.
 - `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
   ownership/group permissions.
 - `rm` is not recursive. It removes files and empty directories only.
+- `vi` is a small line-oriented modal editor, not a full clone of Unix vi.
 - No pipes, redirection, globbing, variables, quotes, or autocomplete yet.
 
 ## Commands
@@ -224,6 +227,39 @@ ADDRESS   PRI STATE   TYPE    NAME
 The extended fields are raw Amiga structures: stack bounds/signals from
 `struct Task`, memory entries from `tc_MemEntry`, and DOS process fields from
 `struct Process` when the task is an AmigaDOS process.
+
+### vi
+
+Opens a small modal line editor:
+
+```text
+#>vi RAM:notes.txt
+```
+
+Supported normal-mode commands:
+
+```text
+j      move down
+k      move up
+g      first line
+G      last line
+i      replace current line, then enter insert mode
+o      append below current line, then enter insert mode
+dd     delete current line
+:w     write file
+:q     quit if unchanged
+:q!    quit without saving
+:wq    write and quit
+```
+
+Insert mode is line-oriented. Enter text one line at a time and type a single
+`.` line to return to normal mode:
+
+```text
+I> hello amiga
+I> second line
+I> .
+```
 
 ### history
 
