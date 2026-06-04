@@ -17,6 +17,7 @@ docker run --rm --platform linux/amd64 \
     src/core/prompt.c \
     src/core/session.c \
     src/core/commands.c \
+    src/commands/cd/cd.c \
     src/commands/echo/echo.c \
     src/commands/date/date.c
 

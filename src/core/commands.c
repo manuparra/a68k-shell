@@ -2,12 +2,14 @@
 #include <string.h>
 
 #include "command.h"
+#include "commands/cd.h"
 #include "commands/date.h"
 #include "commands/echo.h"
 
 static const struct Command commands[] = {
     {"echo", command_echo},
-    {"date", command_date}
+    {"date", command_date},
+    {"cd", command_cd}
 };
 
 const struct Command *commands_get_all(void)
@@ -37,4 +39,3 @@ int commands_dispatch(int argc, char **argv)
     printf("%s: command not found\n", argv[0]);
     return 1;
 }
-
