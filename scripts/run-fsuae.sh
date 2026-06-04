@@ -6,7 +6,12 @@ if [ -z "${FSUAE_KICKSTART_FILE:-}" ]; then
   exit 1
 fi
 
-./scripts/package-workbench.sh
+if [ ! -f build/a68ksh ]; then
+  ./scripts/build.sh
+fi
+
+mkdir -p dist/A68KShell build
+cp build/a68ksh dist/A68KShell/a68ksh
 
 MOUNT_DIR="$(pwd)/dist/A68KShell"
 CONFIG="build/a68k-shell.fs-uae"

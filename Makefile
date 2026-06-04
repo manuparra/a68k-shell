@@ -1,10 +1,7 @@
-.PHONY: build clean package run-fsuae
+.PHONY: build clean run-fsuae
 
 build:
 	./scripts/build.sh
-
-package:
-	./scripts/package-workbench.sh
 
 run-fsuae:
 	./scripts/run-fsuae.sh
