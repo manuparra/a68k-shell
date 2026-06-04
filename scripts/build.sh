@@ -24,6 +24,7 @@ docker run --rm --platform linux/amd64 \
     src/commands/history/history.c \
     src/commands/ls/ls.c \
     src/commands/mkdir/mkdir.c \
+    src/commands/ps/ps.c \
     src/commands/pwd/pwd.c \
     src/commands/rm/rm.c \
     src/commands/date/date.c

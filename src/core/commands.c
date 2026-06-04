@@ -9,6 +9,7 @@
 #include "commands/history.h"
 #include "commands/ls.h"
 #include "commands/mkdir.h"
+#include "commands/ps.h"
 #include "commands/pwd.h"
 #include "commands/rm.h"
 
@@ -21,7 +22,8 @@ static const struct Command commands[] = {
     {"pwd", command_pwd},
     {"mkdir", command_mkdir},
     {"rm", command_rm},
-    {"cat", command_cat}
+    {"cat", command_cat},
+    {"ps", command_ps}
 };
 
 const struct Command *commands_get_all(void)

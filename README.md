@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `history`
+- Commands: `echo`, `date`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `ps`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -77,6 +77,7 @@ RAM:
 #RAM:>mkdir demo
 #RAM:>rm demo
 #RAM:>cat S:Startup-Sequence
+#RAM:>ps
 #RAM:>history
  1 echo hello amiga
  2 date
@@ -87,6 +88,7 @@ RAM:
  7 mkdir demo
  8 rm demo
  9 cat S:Startup-Sequence
+10 ps
 #RAM:>!5
 ls
 #RAM:>unknown
@@ -193,6 +195,19 @@ Prints a file to the shell:
 #>cat S:Startup-Sequence
 #>cat RAM:notes.txt
 ```
+
+### ps
+
+Lists Amiga Exec tasks and AmigaDOS processes known to Exec:
+
+```text
+#>ps
+ADDRESS   PRI STATE   TYPE    NAME
+0012f3a0    0 RUN     process Initial CLI
+00130c20    5 WAIT    task    input.device
+```
+
+This is Amiga-level task information, not Unix process metadata.
 
 ### history
 
