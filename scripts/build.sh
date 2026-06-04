@@ -3,6 +3,7 @@ set -eu
 
 IMAGE="vintagecomputingcarinthia/vbcc4vcc:latest"
 OUT="build/a68ksh"
+LAUNCHER="build/A68KShell"
 
 mkdir -p build
 
@@ -26,3 +27,12 @@ docker run --rm --platform linux/amd64 \
     src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
+
+docker run --rm --platform linux/amd64 \
+  -v "$PWD:/work" \
+  -w /work \
+  "$IMAGE" \
+  vc +kick13 -I/opt/NDK_3.9/Include/include_h -o "$LAUNCHER" \
+    src/workbench/launcher.c
+
+printf 'Built %s\n' "$LAUNCHER"

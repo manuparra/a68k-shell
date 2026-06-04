@@ -1,17 +1,12 @@
 #!/usr/bin/env sh
 set -eu
 
-if [ ! -f build/a68ksh ]; then
-  ./scripts/build.sh
-fi
-
 if [ -z "${FSUAE_KICKSTART_FILE:-}" ]; then
   printf 'Set FSUAE_KICKSTART_FILE to your Kickstart 1.3 ROM path.\n' >&2
   exit 1
 fi
 
-mkdir -p dist/A68KShell build
-cp build/a68ksh dist/A68KShell/a68ksh
+./scripts/package-workbench.sh
 
 MOUNT_DIR="$(pwd)/dist/A68KShell"
 CONFIG="build/a68k-shell.fs-uae"
@@ -36,4 +31,3 @@ if [ "${FSUAE_NO_LAUNCH:-0}" = "1" ]; then
 fi
 
 fs-uae "$CONFIG"
-

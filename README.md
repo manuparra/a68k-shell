@@ -23,6 +23,8 @@ make build
 
 The output binary is written to `build/a68ksh`.
 
+The build also creates a small Workbench launcher at `build/A68KShell`.
+
 The Docker image is:
 
 ```sh
@@ -31,6 +33,24 @@ vintagecomputingcarinthia/vbcc4vcc:latest
 
 The build script runs it with `--platform linux/amd64` and compiles with
 `vc +kick13`.
+
+## Workbench package
+
+Create the Workbench-ready package:
+
+```sh
+make package
+```
+
+The package is written to `dist/A68KShell` and contains:
+
+- `a68ksh`: the shell executable
+- `A68KShell`: a small Workbench launcher
+- `A68KShell.info`: the Workbench Tool icon
+
+From Workbench, open the mounted `A68KShell` drawer and double-click the
+`A68KShell` icon. The launcher opens a `CON:` window and runs `a68ksh` inside
+it.
 
 ## Run in fs-UAE
 
@@ -52,11 +72,12 @@ Then run:
 make run-fsuae
 ```
 
-The script builds `build/a68ksh` if needed, copies it to
-`dist/A68KShell/a68ksh`, generates `build/a68k-shell.fs-uae`, and mounts
-`dist/A68KShell` as a hard drive directory.
+The script builds and packages the app if needed, generates
+`build/a68k-shell.fs-uae`, and mounts `dist/A68KShell` as a hard drive
+directory.
 
-Inside Workbench or Amiga CLI, open the mounted directory and run:
+Inside Workbench, double-click the `A68KShell` icon. From Amiga CLI, you can
+still open the mounted directory and run:
 
 ```text
 a68ksh
