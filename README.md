@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>`
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `cd`, `ls`
+- Commands: `echo`, `date`, `cd`, `ls`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -72,6 +72,14 @@ hello amiga
 #>cd RAM:
 #>ls
 #>ls -l
+#>history
+ 1 echo hello amiga
+ 2 date
+ 3 cd RAM:
+ 4 ls
+ 5 ls -l
+#>!4
+ls
 #>unknown
 unknown: command not found
 #>exit
@@ -86,7 +94,7 @@ The exact `date` value comes from the emulator/runtime clock.
   current-directory path resolution needs a Kickstart 1.3-safe implementation.
 - `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
   ownership/group permissions.
-- No `pwd`, pipes, redirection, globbing, variables, history, quotes, or
+- No `pwd`, pipes, redirection, globbing, variables, quotes, or
   autocomplete yet.
 
 ## Commands
@@ -130,6 +138,25 @@ Lists files from the current directory or a supplied path:
 
 `ls -l` prints a Unix-inspired view with type, permission-style flags, size, and
 name.
+
+### history
+
+Shows the last 16 commands with a number:
+
+```text
+#>history
+ 1 cd RAM:
+ 2 ls -l
+```
+
+Run a previous command with `!number`:
+
+```text
+#>!1
+cd RAM:
+```
+
+The expanded command is printed before it runs.
 
 ## Development flow
 

@@ -13,12 +13,14 @@ docker run --rm --platform linux/amd64 \
   vc +kick13 -Iinclude -Isrc/core -I/opt/NDK_3.9/Include/include_h -o "$OUT" \
     src/core/banner.c \
     src/core/main.c \
+    src/core/history.c \
     src/core/shell.c \
     src/core/prompt.c \
     src/core/session.c \
     src/core/commands.c \
     src/commands/cd/cd.c \
     src/commands/echo/echo.c \
+    src/commands/history/history.c \
     src/commands/ls/ls.c \
     src/commands/date/date.c
 

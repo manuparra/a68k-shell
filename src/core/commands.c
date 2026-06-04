@@ -5,13 +5,15 @@
 #include "commands/cd.h"
 #include "commands/date.h"
 #include "commands/echo.h"
+#include "commands/history.h"
 #include "commands/ls.h"
 
 static const struct Command commands[] = {
     {"echo", command_echo},
     {"date", command_date},
     {"cd", command_cd},
-    {"ls", command_ls}
+    {"ls", command_ls},
+    {"history", command_history}
 };
 
 const struct Command *commands_get_all(void)
