@@ -4,13 +4,16 @@
 #include "command.h"
 #include "commands/cat.h"
 #include "commands/cd.h"
+#include "commands/cp.h"
 #include "commands/date.h"
 #include "commands/df.h"
+#include "commands/dir.h"
 #include "commands/echo.h"
 #include "commands/head.h"
 #include "commands/history.h"
 #include "commands/ls.h"
 #include "commands/mkdir.h"
+#include "commands/mv.h"
 #include "commands/ps.h"
 #include "commands/pwd.h"
 #include "commands/rm.h"
@@ -22,11 +25,14 @@ static const struct Command commands[] = {
     {"df", command_df},
     {"cd", command_cd},
     {"ls", command_ls},
+    {"dir", command_dir},
     {"history", command_history},
     {"head", command_head},
     {"tail", command_tail},
     {"pwd", command_pwd},
     {"mkdir", command_mkdir},
+    {"cp", command_cp},
+    {"mv", command_mv},
     {"rm", command_rm},
     {"cat", command_cat},
     {"ps", command_ps}

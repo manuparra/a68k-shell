@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `df`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `head`, `tail`, `ps`, `history`
+- Commands: `echo`, `date`, `df`, `cd`, `pwd`, `ls`, `dir`, `mkdir`, `cp`, `mv`, `rm`, `cat`, `head`, `tail`, `ps`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -78,7 +78,11 @@ RAM:              1024       128       896      1      0      0
 RAM:
 #RAM:>ls
 #RAM:>ls -l
+#RAM:>dir
 #RAM:>mkdir demo
+#RAM:>echo "copy me" > source.txt
+#RAM:>cp source.txt copy.txt
+#RAM:>mv copy.txt renamed.txt
 #RAM:>rm demo
 #RAM:>cat S:Startup-Sequence
 #RAM:>head S:Startup-Sequence
@@ -91,12 +95,12 @@ RAM:
  4 pwd
  5 ls
  6 ls -l
- 7 mkdir demo
- 8 rm demo
- 9 cat S:Startup-Sequence
-10 head S:Startup-Sequence
-11 tail S:Startup-Sequence
-12 ps
+ 7 dir
+ 8 mkdir demo
+ 9 echo "copy me" > source.txt
+10 cp source.txt copy.txt
+11 mv copy.txt renamed.txt
+12 rm demo
 #RAM:>!5
 ls
 #RAM:>unknown
@@ -113,10 +117,11 @@ The exact `date` value comes from the emulator/runtime clock.
 - `pwd` prints the shell's tracked path. It starts as `.` until the first `cd`
   because Kickstart 1.3 does not provide a simple safe `NameFromLock` path API
   in the current vbcc target.
-- `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
+- `ls -l` uses a Unix-like aesthetic and shows AmigaDOS file dates converted
+  from the file's `DateStamp`, but AmigaOS protection bits are not Unix
   ownership/group permissions.
 - `rm` is not recursive. It removes files and empty directories only.
-- No pipes, input redirection, globbing, variables, quotes, or autocomplete yet.
+- No pipes, input redirection, globbing, variables, or autocomplete yet.
 
 ## Commands
 
@@ -215,8 +220,26 @@ Lists files from the current directory or a supplied path:
 #>ls -l DF0:folder
 ```
 
-`ls -l` prints a Unix-inspired view with type, permission-style flags, size, and
-name.
+`ls -l` prints a Unix-inspired view with type, permission-style flags, size,
+modification date, and name:
+
+```text
+-rw-r-xr-x      128 05-Jun-2026 17:45  note.txt
+drw-r-xr-x        0 05-Jun-2026 17:46  drawer/
+```
+
+The modification date is converted from the AmigaDOS `DateStamp`, whose epoch
+starts on `1978-01-01`.
+
+### dir
+
+Lists files and directories separated by tabs:
+
+```text
+#>dir
+source.txt	copy.txt	demo/
+#>dir RAM:
+```
 
 ### mkdir
 
@@ -226,6 +249,29 @@ Creates a directory in the current directory or at the supplied Amiga path:
 #>mkdir tmp
 #>mkdir RAM:tmp
 ```
+
+### cp
+
+Copies one file to another path:
+
+```text
+#>cp source.txt copy.txt
+#>cp RAM:source.txt DF0:copy.txt
+```
+
+`cp` copies file contents only. It does not recursively copy directories.
+
+### mv
+
+Moves or renames a file or directory using AmigaDOS `Rename()`:
+
+```text
+#>mv oldname.txt newname.txt
+#>mv RAM:file.txt DF0:file.txt
+```
+
+Moving between devices depends on what AmigaDOS `Rename()` supports for those
+paths.
 
 ### rm
 

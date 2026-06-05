@@ -31,6 +31,65 @@ static void print_permissions(LONG protection, int is_dir)
     output_fputs(mode);
 }
 
+static void print_date(struct DateStamp *stamp)
+{
+    static const char *months[] = {
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    };
+    static const int month_days[] = {
+        31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    };
+    LONG days;
+    int year;
+    int month;
+    int day;
+    int days_in_year;
+    int days_in_month;
+    int hour;
+    int minute;
+
+    days = stamp->ds_Days;
+    year = 1978;
+
+    for (;;) {
+        days_in_year = 365;
+        if ((year % 4) == 0 && ((year % 100) != 0 || (year % 400) == 0)) {
+            days_in_year = 366;
+        }
+
+        if (days < days_in_year) {
+            break;
+        }
+
+        days -= days_in_year;
+        year++;
+    }
+
+    month = 0;
+    for (;;) {
+        days_in_month = month_days[month];
+        if (month == 1
+            && (year % 4) == 0
+            && ((year % 100) != 0 || (year % 400) == 0)) {
+            days_in_month = 29;
+        }
+
+        if (days < days_in_month) {
+            break;
+        }
+
+        days -= days_in_month;
+        month++;
+    }
+
+    day = (int)days + 1;
+    hour = (int)(stamp->ds_Minute / 60);
+    minute = (int)(stamp->ds_Minute % 60);
+
+    output_printf("%02d-%s-%04d %02d:%02d", day, months[month], year, hour, minute);
+}
+
 static void print_entry(struct FileInfoBlock *fib, int long_format)
 {
     int is_dir;
@@ -39,7 +98,9 @@ static void print_entry(struct FileInfoBlock *fib, int long_format)
 
     if (long_format) {
         print_permissions(fib->fib_Protection, is_dir);
-        output_printf(" %8ld  %s", fib->fib_Size, fib->fib_FileName);
+        output_printf(" %8ld ", fib->fib_Size);
+        print_date(&fib->fib_Date);
+        output_printf("  %s", fib->fib_FileName);
     } else {
         output_fputs(fib->fib_FileName);
     }

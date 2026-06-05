@@ -21,5 +21,6 @@ Commands that call AmigaDOS should include the DOS structs from the NDK headers
 and the vbcc inline prototypes from the Kickstart 1.3 target, as done by `cd`
 and `ls`.
 
-The parser is intentionally small. It splits on spaces and tabs, with no quotes,
-globbing, pipes, redirection, variables, history, or autocomplete.
+The parser is intentionally small. It supports quoted arguments, `;` command
+sequences, and `>` output redirection. It does not support globbing, pipes,
+input redirection, variables, or autocomplete.
