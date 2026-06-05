@@ -1,7 +1,10 @@
-.PHONY: build clean run-fsuae
+.PHONY: build clean run-fsuae test
 
 build:
 	./scripts/build.sh
+
+test:
+	./scripts/test-parser.sh
 
 run-fsuae:
 	./scripts/run-fsuae.sh
