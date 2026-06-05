@@ -65,10 +65,11 @@ a68ksh
 Expected smoke test:
 
 ```text
-#>echo hello amiga
+#>echo "hello amiga"
 hello amiga
 #>date
 2026-06-04 19:00:00
+#>echo "Hola" ; cat S:Startup-Sequence ; ps
 #>df
 Filesystem     TotalKB    UsedKB    FreeKB TotalM  UsedM  FreeM
 RAM:              1024       128       896      1      0      0
@@ -84,7 +85,7 @@ RAM:
 #RAM:>tail S:Startup-Sequence
 #RAM:>ps
 #RAM:>history
- 1 echo hello amiga
+ 1 echo "hello amiga"
  2 date
  3 cd RAM:
  4 pwd
@@ -119,12 +120,22 @@ The exact `date` value comes from the emulator/runtime clock.
 
 ## Commands
 
+Multiple commands can be entered on one line by separating them with `;`:
+
+```text
+#>echo "Hola" ; cat RAM:notes.txt ; ps
+```
+
+Semicolons inside quoted strings are treated as text.
+
 ### echo
 
 ```text
-#>echo hello amiga
+#>echo "hello amiga"
 hello amiga
 ```
+
+`echo` requires one quoted string argument.
 
 ### date
 
