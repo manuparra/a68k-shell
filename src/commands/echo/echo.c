@@ -2,18 +2,19 @@
 
 #include "commands/echo.h"
 
+#define QUOTED_ARG_MARKER '\001'
+
 int command_echo(int argc, char **argv)
 {
-    int i;
+    char *value;
 
-    for (i = 1; i < argc; ++i) {
-        if (i > 1) {
-            putchar(' ');
-        }
-        fputs(argv[i], stdout);
+    if (argc != 2 || argv[1][0] != QUOTED_ARG_MARKER) {
+        puts("usage: echo \"<string>\"");
+        return 1;
     }
 
+    value = argv[1] + 1;
+    fputs(value, stdout);
     putchar('\n');
     return 0;
 }
-
