@@ -36,9 +36,8 @@ static int parse_line(char *line, char **argv, int max_args)
             break;
         }
 
-        argv[argc++] = write;
-
         if (*read == '"') {
+            argv[argc++] = write;
             *write++ = QUOTED_ARG_MARKER;
             read++;
             while (*read != '\0' && *read != '"') {
@@ -48,11 +47,15 @@ static int parse_line(char *line, char **argv, int max_args)
                 read++;
             }
         } else {
+            argv[argc++] = write;
             while (*read != '\0' && !is_space(*read)) {
                 *write++ = *read++;
             }
         }
 
+        if (*read != '\0') {
+            read++;
+        }
         *write++ = '\0';
     }
 
