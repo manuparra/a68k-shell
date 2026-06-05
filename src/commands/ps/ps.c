@@ -9,6 +9,7 @@
 #include <inline/exec_protos.h>
 
 #include "commands/ps.h"
+#include "output.h"
 
 #define PS_MAX_TASKS 64
 
@@ -136,7 +137,7 @@ static void print_task(const struct TaskInfo *info)
         name = "(unnamed)";
     }
 
-    printf("%08lx  %3ld  %-7s %-7s %s\n",
+    output_printf("%08lx  %3ld  %-7s %-7s %s\n",
         info->address,
         info->priority,
         task_state_name(info->state),
@@ -162,13 +163,13 @@ static void print_task_amiga(const struct TaskInfo *info)
         }
     }
 
-    printf("          stack=%lu used=%lu free=%lu sp=%08lx flags=%02lx\n",
+    output_printf("          stack=%lu used=%lu free=%lu sp=%08lx flags=%02lx\n",
         stack_size,
         stack_used,
         stack_free,
         info->sp,
         (ULONG)info->flags);
-    printf("          sigalloc=%08lx sigwait=%08lx sigrecvd=%08lx mem=%lu/%lu\n",
+    output_printf("          sigalloc=%08lx sigwait=%08lx sigrecvd=%08lx mem=%lu/%lu\n",
         info->sig_alloc,
         info->sig_wait,
         info->sig_recvd,
@@ -176,13 +177,13 @@ static void print_task_amiga(const struct TaskInfo *info)
         info->mem_bytes);
 
     if (info->type == NT_PROCESS) {
-        printf("          cli=%ld seg=%08lx curdir=%08lx cis=%08lx cos=%08lx\n",
+        output_printf("          cli=%ld seg=%08lx curdir=%08lx cis=%08lx cos=%08lx\n",
             info->cli_number,
             info->seg_list,
             info->current_dir,
             info->input_stream,
             info->output_stream);
-        printf("          console=%08lx filesystem=%08lx\n",
+        output_printf("          console=%08lx filesystem=%08lx\n",
             info->console_task,
             info->filesystem_task);
     }
@@ -214,7 +215,7 @@ int command_ps(int argc, char **argv)
         if (strcmp(argv[i], "-a") == 0) {
             amiga_details = 1;
         } else {
-            printf("ps: unsupported option %s\n", argv[i]);
+            output_printf("ps: unsupported option %s\n", argv[i]);
             return 1;
         }
     }
@@ -234,7 +235,7 @@ int command_ps(int argc, char **argv)
 
     Permit();
 
-    printf("ADDRESS   PRI STATE   TYPE    NAME\n");
+    output_printf("ADDRESS   PRI STATE   TYPE    NAME\n");
     for (i = 0; i < count; ++i) {
         print_task(&tasks[i]);
         if (amiga_details) {
@@ -243,7 +244,7 @@ int command_ps(int argc, char **argv)
     }
 
     if (count == PS_MAX_TASKS) {
-        puts("ps: task list truncated");
+        output_puts("ps: task list truncated");
     }
 
     return 0;

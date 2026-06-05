@@ -14,6 +14,7 @@ docker run --rm --platform linux/amd64 \
     src/core/banner.c \
     src/core/main.c \
     src/core/history.c \
+    src/core/output.c \
     src/core/shell.c \
     src/core/prompt.c \
     src/core/session.c \

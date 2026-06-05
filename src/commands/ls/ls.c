@@ -7,6 +7,7 @@
 #include <inline/dos_protos.h>
 
 #include "commands/ls.h"
+#include "output.h"
 
 extern struct DosLibrary *DOSBase;
 extern struct ExecBase *SysBase;
@@ -27,7 +28,7 @@ static void print_permissions(LONG protection, int is_dir)
     mode[9] = 'x';
     mode[10] = '\0';
 
-    fputs(mode, stdout);
+    output_fputs(mode);
 }
 
 static void print_entry(struct FileInfoBlock *fib, int long_format)
@@ -38,16 +39,16 @@ static void print_entry(struct FileInfoBlock *fib, int long_format)
 
     if (long_format) {
         print_permissions(fib->fib_Protection, is_dir);
-        printf(" %8ld  %s", fib->fib_Size, fib->fib_FileName);
+        output_printf(" %8ld  %s", fib->fib_Size, fib->fib_FileName);
     } else {
-        fputs(fib->fib_FileName, stdout);
+        output_fputs(fib->fib_FileName);
     }
 
     if (is_dir) {
-        putchar('/');
+        output_putchar('/');
     }
 
-    putchar('\n');
+    output_putchar('\n');
 }
 
 static int list_path(const char *path, int long_format)
@@ -63,7 +64,7 @@ static int list_path(const char *path, int long_format)
 
     fib = (struct FileInfoBlock *)AllocMem(sizeof(struct FileInfoBlock), MEMF_CLEAR);
     if (fib == 0) {
-        puts("ls: out of memory");
+        output_puts("ls: out of memory");
         UnLock(lock);
         return 1;
     }

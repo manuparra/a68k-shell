@@ -4,6 +4,7 @@
 #include <inline/dos_protos.h>
 
 #include "commands/cat.h"
+#include "output.h"
 
 extern struct DosLibrary *DOSBase;
 
@@ -30,7 +31,7 @@ int command_cat(int argc, char **argv)
     }
 
     while ((bytes_read = Read(file, buffer, sizeof(buffer))) > 0) {
-        fwrite(buffer, 1, bytes_read, stdout);
+        output_write(buffer, bytes_read);
     }
 
     Close(file);
@@ -42,4 +43,3 @@ int command_cat(int argc, char **argv)
 
     return 0;
 }
-

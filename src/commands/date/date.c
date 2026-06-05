@@ -2,6 +2,7 @@
 #include <time.h>
 
 #include "commands/date.h"
+#include "output.h"
 
 int command_date(int argc, char **argv)
 {
@@ -12,11 +13,11 @@ int command_date(int argc, char **argv)
     local = localtime(&now);
 
     if (local == 0) {
-        puts("date unavailable");
+        output_puts("date unavailable");
         return 1;
     }
 
-    printf("%04d-%02d-%02d %02d:%02d:%02d\n",
+    output_printf("%04d-%02d-%02d %02d:%02d:%02d\n",
         local->tm_year + 1900,
         local->tm_mon + 1,
         local->tm_mday,

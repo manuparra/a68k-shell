@@ -128,6 +128,20 @@ Multiple commands can be entered on one line by separating them with `;`:
 
 Semicolons inside quoted strings are treated as text.
 
+Redirect command output to a file with `>`:
+
+```text
+#>echo "Hola" > salida.txt
+#>cat salida.txt
+Hola
+```
+
+Redirection applies to the command immediately before it, so this works too:
+
+```text
+#>echo "Hola" > salida.txt ; cat salida.txt ; ps > tasks.txt
+```
+
 ### echo
 
 ```text
