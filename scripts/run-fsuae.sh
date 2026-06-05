@@ -25,6 +25,9 @@ CONFIG="build/a68k-shell.fs-uae"
   if [ -n "${FSUAE_WORKBENCH_ADF:-}" ]; then
     printf 'floppy_drive_0 = %s\n' "$FSUAE_WORKBENCH_ADF"
   fi
+  if [ "${FSUAE_MAP_LESS_TO_PERIOD:-1}" = "1" ]; then
+    printf 'keyboard_key_less = action_key_period\n'
+  fi
   printf 'hard_drive_0 = %s\n' "$MOUNT_DIR"
 } > "$CONFIG"
 

@@ -116,7 +116,7 @@ The exact `date` value comes from the emulator/runtime clock.
 - `ls -l` uses a Unix-like aesthetic, but AmigaOS protection bits are not Unix
   ownership/group permissions.
 - `rm` is not recursive. It removes files and empty directories only.
-- No pipes, redirection, globbing, variables, quotes, or autocomplete yet.
+- No pipes, input redirection, globbing, variables, quotes, or autocomplete yet.
 
 ## Commands
 
@@ -141,6 +141,11 @@ Redirection applies to the command immediately before it, so this works too:
 ```text
 #>echo "Hola" > salida.txt ; cat salida.txt ; ps > tasks.txt
 ```
+
+When running through `scripts/run-fsuae.sh`, the generated FS-UAE config maps
+the host physical `< >` key to the Amiga `.` key. On Spanish/Mac keyboards this
+lets `Shift + < >` produce `>` in Workbench/CLI. Set
+`FSUAE_MAP_LESS_TO_PERIOD=0` before `make run-fsuae` to disable that mapping.
 
 ### echo
 
