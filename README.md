@@ -6,7 +6,7 @@ The current MVP is a small AmigaOS 1.3-compatible interactive shell with:
 
 - Prompt: `#>` or `#folder>` after changing directory
 - Startup banner with author/contact details
-- Commands: `echo`, `date`, `df`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `ps`, `history`
+- Commands: `echo`, `date`, `df`, `cd`, `pwd`, `ls`, `mkdir`, `rm`, `cat`, `head`, `tail`, `ps`, `history`
 - Built-in exit command: `exit`
 - Modular command layout under `src/commands/`
 
@@ -80,6 +80,8 @@ RAM:
 #RAM:>mkdir demo
 #RAM:>rm demo
 #RAM:>cat S:Startup-Sequence
+#RAM:>head S:Startup-Sequence
+#RAM:>tail S:Startup-Sequence
 #RAM:>ps
 #RAM:>history
  1 echo hello amiga
@@ -91,7 +93,9 @@ RAM:
  7 mkdir demo
  8 rm demo
  9 cat S:Startup-Sequence
-10 ps
+10 head S:Startup-Sequence
+11 tail S:Startup-Sequence
+12 ps
 #RAM:>!5
 ls
 #RAM:>unknown
@@ -211,6 +215,24 @@ Prints a file to the shell:
 ```text
 #>cat S:Startup-Sequence
 #>cat RAM:notes.txt
+```
+
+### head
+
+Prints the first 5 lines of a file:
+
+```text
+#>head S:Startup-Sequence
+#>head RAM:notes.txt
+```
+
+### tail
+
+Prints the last 5 lines of a file:
+
+```text
+#>tail S:Startup-Sequence
+#>tail RAM:notes.txt
 ```
 
 ### ps

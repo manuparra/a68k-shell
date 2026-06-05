@@ -22,12 +22,14 @@ docker run --rm --platform linux/amd64 \
     src/commands/cd/cd.c \
     src/commands/df/df.c \
     src/commands/echo/echo.c \
+    src/commands/head/head.c \
     src/commands/history/history.c \
     src/commands/ls/ls.c \
     src/commands/mkdir/mkdir.c \
     src/commands/ps/ps.c \
     src/commands/pwd/pwd.c \
     src/commands/rm/rm.c \
+    src/commands/tail/tail.c \
     src/commands/date/date.c
 
 printf 'Built %s\n' "$OUT"
