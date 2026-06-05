@@ -5,6 +5,7 @@
 #include <inline/dos_protos.h>
 
 #include "commands/tail.h"
+#include "output.h"
 
 #define TAIL_LINES 5
 #define TAIL_LINE_LENGTH 160
@@ -98,9 +99,8 @@ int command_tail(int argc, char **argv)
 
     for (i = 0; i < count; ++i) {
         index = (next - count + i + TAIL_LINES) % TAIL_LINES;
-        fputs(lines[index], stdout);
+        output_fputs(lines[index]);
     }
 
     return 0;
 }
-

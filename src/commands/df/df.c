@@ -6,6 +6,7 @@
 #include <inline/dos_protos.h>
 
 #include "commands/df.h"
+#include "output.h"
 
 #define DF_MAX_SEEN 32
 
@@ -124,7 +125,7 @@ static int print_volume(const char *volume)
     used_mb = used_kb / 1024;
     free_mb = free_kb / 1024;
 
-    printf("%-12s %9lu %9lu %9lu %6lu %6lu %6lu\n",
+    output_printf("%-12s %9lu %9lu %9lu %6lu %6lu %6lu\n",
         lock_name,
         total_kb,
         used_kb,
@@ -182,18 +183,18 @@ int command_df(int argc, char **argv)
     int printed;
 
     if (argc > 1) {
-        puts("usage: df");
+        output_puts("usage: df");
         return 1;
     }
 
     seen_count = 0;
-    puts("Filesystem     TotalKB    UsedKB    FreeKB TotalM  UsedM  FreeM");
+    output_puts("Filesystem     TotalKB    UsedKB    FreeKB TotalM  UsedM  FreeM");
 
     printed = print_dos_volumes();
     printed += print_fallback_volumes();
 
     if (printed == 0) {
-        puts("df: no mounted volumes found");
+        output_puts("df: no mounted volumes found");
         return 1;
     }
 

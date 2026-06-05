@@ -5,6 +5,7 @@
 #include "banner.h"
 #include "command.h"
 #include "history.h"
+#include "output.h"
 #include "shell.h"
 #include "prompt.h"
 #include "session.h"
@@ -114,6 +115,76 @@ static void unquote_args(char **argv, int argc)
     }
 }
 
+static void trim_token(char *text)
+{
+    char *start;
+    char *end;
+
+    start = text;
+    while (is_space(*start)) {
+        start++;
+    }
+
+    if (start != text) {
+        memmove(text, start, strlen(start) + 1);
+    }
+
+    end = text + strlen(text);
+    while (end > text && is_space(*(end - 1))) {
+        end--;
+    }
+    *end = '\0';
+}
+
+static int extract_redirection(char *command, char *target, int target_size)
+{
+    char *read;
+    char *redirect;
+    int in_quote;
+
+    read = command;
+    redirect = 0;
+    in_quote = 0;
+
+    while (*read != '\0') {
+        if (*read == '"') {
+            in_quote = !in_quote;
+        } else if (*read == '>' && !in_quote) {
+            redirect = read;
+            break;
+        }
+        read++;
+    }
+
+    if (redirect == 0) {
+        target[0] = '\0';
+        return 0;
+    }
+
+    *redirect = '\0';
+    redirect++;
+    trim_token(command);
+    trim_token(redirect);
+
+    if (redirect[0] == '"') {
+        redirect++;
+        read = strchr(redirect, '"');
+        if (read != 0) {
+            *read = '\0';
+        }
+    }
+
+    if (redirect[0] == '\0') {
+        puts("redirect: missing output file");
+        target[0] = '\0';
+        return 1;
+    }
+
+    strncpy(target, redirect, target_size - 1);
+    target[target_size - 1] = '\0';
+    return 0;
+}
+
 static int expand_history(char *line, int line_size)
 {
     int number;
@@ -153,8 +224,10 @@ void shell_run(void)
 {
     char line[SHELL_MAX_LINE + 1];
     char command[SHELL_MAX_LINE + 1];
+    char redirect_target[SHELL_MAX_LINE + 1];
     char *cursor;
     char *argv[SHELL_MAX_ARGS];
+    FILE *redirect_file;
     int argc;
     int should_exit;
 
@@ -178,6 +251,10 @@ void shell_run(void)
         cursor = line;
         should_exit = 0;
         while (split_next_command(&cursor, command, sizeof(command))) {
+            if (extract_redirection(command, redirect_target, sizeof(redirect_target)) != 0) {
+                continue;
+            }
+
             argc = parse_line(command, argv, SHELL_MAX_ARGS);
             if (argc == 0) {
                 continue;
@@ -191,7 +268,23 @@ void shell_run(void)
             if (strcmp(argv[0], "echo") != 0) {
                 unquote_args(argv, argc);
             }
+
+            redirect_file = 0;
+            if (redirect_target[0] != '\0') {
+                redirect_file = fopen(redirect_target, "w");
+                if (redirect_file == 0) {
+                    printf("redirect: cannot write %s\n", redirect_target);
+                    continue;
+                }
+                output_set(redirect_file);
+            }
+
             commands_dispatch(argc, argv);
+
+            if (redirect_file != 0) {
+                output_set(stdout);
+                fclose(redirect_file);
+            }
         }
 
         if (should_exit) {

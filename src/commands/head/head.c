@@ -4,6 +4,7 @@
 #include <inline/dos_protos.h>
 
 #include "commands/head.h"
+#include "output.h"
 
 #define HEAD_LINES 5
 
@@ -35,7 +36,7 @@ int command_head(int argc, char **argv)
     lines = 0;
     bytes_read = 0;
     while (lines < HEAD_LINES && (bytes_read = Read(file, &ch, 1)) == 1) {
-        putchar(ch);
+        output_putchar(ch);
         if (ch == '\n') {
             lines++;
         }
